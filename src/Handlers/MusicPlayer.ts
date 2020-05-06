@@ -100,6 +100,8 @@ export class MusicPlayer
             })
             .on('error', error => console.error(error));
 
+        dispatcher.setVolume(1);
+
         let embed = new MessageEmbed()
             .setDescription("Playing song")
             .addField("Title", this.songQueue[0].title)

@@ -15,8 +15,8 @@
     "ffmpeg": "^0.0.4",
     "find-youtube-urls": "^0.0.2",
     "mongoose": "^5.9.12",
+    "node-opus": "^0.3.3",
     "youtube-search": "^1.1.4",
-    "node-opus": "^0.3.2",
     "ytdl-core-discord": "^1.2.0"
   },
   "devDependencies": {
