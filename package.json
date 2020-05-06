@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
+    "erela.js": "^1.1.7",
     "mongoose": "^5.9.12"
   },
   "devDependencies": {

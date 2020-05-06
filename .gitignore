@@ -1,6 +1,9 @@
 # secret information
 config.json
 
+#lavalink
+Lavalink.jar
+
 # Logs
 logs
 *.log

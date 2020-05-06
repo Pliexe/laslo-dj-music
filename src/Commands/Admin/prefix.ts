@@ -21,7 +21,7 @@ export = class extends Command
     async run(message: Message, args: string[], errorMessage: MessageErrorSender)
     {
         if (message.guild.ownerID !== message.author.id) return errorMessage.noPermission();
-        if (args.length <= 0) return errorMessage.syntaxErr(this.usage);
+        if (!args[0]) return errorMessage.syntaxErr(this.usage);
 
         let newPrefix: string = args[0];
 
