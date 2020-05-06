@@ -25,9 +25,9 @@ export class MusicPlayer
 
     static async search(term: string, message: Message, callback: (reason: string, song: ISong) => void)
     {
-        if (term.length > 100) return callback("You may not provide longer than 100 character search term!", null);
+        if (term.length > 100) return callback("You may not provide longer than 100 character search term!", undefined);
         let results = await search(term, { maxResults: 5, key: process.env.YOUTUBE_API_KEY, type: "video,playlist" });
-        if (results.results.length <= 0) callback("Video or playlist not found.", null);
+        if (results.results.length <= 0) callback("Video or playlist not found.", undefined);
         let songs: ISong[] = [];
         results.results.forEach(result =>
         {
@@ -56,7 +56,7 @@ export class MusicPlayer
             {
                 if (m.content.toLowerCase() === "cancel") return collector.stop("cancelled");
                 let index = Number(m.content - 1);
-                callback(null, {
+                callback(undefined, {
                     id: results.results[index].id,
                     title: results.results[index].title,
                     url: results.results[index].link
@@ -68,12 +68,12 @@ export class MusicPlayer
                 console.log(reason);
                 if (["time", "cancelled"].includes(reason)) {
                     message.channel.send("Cancelled selection.");
-                    callback("1", null);
+                    callback("1", undefined);
                 };
 
             });
         } else {
-            callback(null, {
+            callback(undefined, {
                 id: results.results[0].id,
                 title: results.results[0].title,
                 url: results.results[0].link
@@ -91,7 +91,7 @@ export class MusicPlayer
     private async play(song: ISong)
     {
         console.log(song);
-        const dispatcher = this.connection.play(await ytdl(song.url))
+        const dispatcher = this.connection.play(await ytdl(song.url), { type: "opus" })
             .on('end', reason =>
             {
                 if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
@@ -100,8 +100,6 @@ export class MusicPlayer
                 this.play(this.songQueue[0]);
             })
             .on('error', error => console.error(error));
-
-        dispatcher.setVolume(1);
 
         let embed = new MessageEmbed()
             .setDescription("Playing song")

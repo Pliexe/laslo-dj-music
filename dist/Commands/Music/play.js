@@ -33,7 +33,7 @@ module.exports = class extends Command_1.Command {
             if (!permissions.has('SPEAK'))
                 return message.channel.send('I cannot speak in this voice channel, make sure I have the proper permissions!');
             MusicPlayer_1.MusicPlayer.search(args.join(' '), message, (NF, song) => __awaiter(this, void 0, void 0, function* () {
-                if (NF)
+                if (NF || NF == "1")
                     if (NF != "1")
                         return errorMessage.syntaxErr(this.usage, '<youtube title/url>', NF);
                 let player = this.client.queue.get(message.guild.id);

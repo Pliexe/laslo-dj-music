@@ -25,10 +25,10 @@ class MusicPlayer {
     static search(term, message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
             if (term.length > 100)
-                return callback("You may not provide longer than 100 character search term!", null);
+                return callback("You may not provide longer than 100 character search term!", undefined);
             let results = yield youtube_search_1.default(term, { maxResults: 5, key: process.env.YOUTUBE_API_KEY, type: "video,playlist" });
             if (results.results.length <= 0)
-                callback("Video or playlist not found.", null);
+                callback("Video or playlist not found.", undefined);
             let songs = [];
             results.results.forEach(result => {
                 songs.push({
@@ -51,7 +51,7 @@ class MusicPlayer {
                     if (m.content.toLowerCase() === "cancel")
                         return collector.stop("cancelled");
                     let index = Number(m.content - 1);
-                    callback(null, {
+                    callback(undefined, {
                         id: results.results[index].id,
                         title: results.results[index].title,
                         url: results.results[index].link
@@ -61,13 +61,13 @@ class MusicPlayer {
                     console.log(reason);
                     if (["time", "cancelled"].includes(reason)) {
                         message.channel.send("Cancelled selection.");
-                        callback("1", null);
+                        callback("1", undefined);
                     }
                     ;
                 });
             }
             else {
-                callback(null, {
+                callback(undefined, {
                     id: results.results[0].id,
                     title: results.results[0].title,
                     url: results.results[0].link
@@ -84,7 +84,7 @@ class MusicPlayer {
     play(song) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(song);
-            const dispatcher = this.connection.play(yield ytdl_core_discord_1.default(song.url))
+            const dispatcher = this.connection.play(yield ytdl_core_discord_1.default(song.url), { type: "opus" })
                 .on('end', reason => {
                 if (reason === 'Stream is not generating quickly enough.')
                     console.log('Song ended.');
@@ -94,7 +94,6 @@ class MusicPlayer {
                 this.play(this.songQueue[0]);
             })
                 .on('error', error => console.error(error));
-            dispatcher.setVolume(1);
             let embed = new discord_js_1.MessageEmbed()
                 .setDescription("Playing song")
                 .addField("Title", song.title)

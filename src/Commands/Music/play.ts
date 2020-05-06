@@ -30,7 +30,7 @@ export = class extends Command
 
         MusicPlayer.search(args.join(' '), message, async (NF: string, song: ISong) =>
         {
-            if (NF)
+            if (NF || NF == "1")
                 if (NF != "1")
                     return errorMessage.syntaxErr(this.usage, '<youtube title/url>', NF);
 
