@@ -48,7 +48,7 @@ class MusicPlayer {
                         new RegExp('^([1-5|cancel])$', "i").test(m.content);
                 }, { time: 30000, max: 1 });
                 collector.on('collect', m => {
-                    if (/cancel/i.test(m.content))
+                    if (m.content.toLowerCase() === "cancel")
                         return collector.stop("cancelled");
                     let index = Number(m.content - 1);
                     callback(null, {
@@ -58,9 +58,12 @@ class MusicPlayer {
                     });
                 });
                 collector.on("end", (_, reason) => {
-                    if (["time", "cancelled"].includes(reason))
-                        return message.channel.send("Cancelled selection.");
-                    callback("1", null);
+                    console.log(reason);
+                    if (["time", "cancelled"].includes(reason)) {
+                        message.channel.send("Cancelled selection.");
+                        callback("1", null);
+                    }
+                    ;
                 });
             }
             else {
@@ -73,32 +76,29 @@ class MusicPlayer {
         });
     }
     addSong(song) {
-        if (this.songQueue.length <= 0) {
-            this.songQueue.push(song);
-            this.play();
-        }
-        else {
-            this.songQueue.push(song);
-        }
+        console.log("Adding song: ");
+        if (this.songQueue.length <= 0)
+            this.play(song);
+        this.songQueue.push(song);
     }
-    play() {
+    play(song) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(this.songQueue);
-            const dispatcher = this.connection.play(yield ytdl_core_discord_1.default(this.songQueue[0].url))
+            console.log(song);
+            const dispatcher = this.connection.play(yield ytdl_core_discord_1.default(song.url))
                 .on('end', reason => {
                 if (reason === 'Stream is not generating quickly enough.')
                     console.log('Song ended.');
                 else
                     console.log(reason);
                 this.songQueue.shift();
-                this.play();
+                this.play(this.songQueue[0]);
             })
                 .on('error', error => console.error(error));
             dispatcher.setVolume(1);
             let embed = new discord_js_1.MessageEmbed()
                 .setDescription("Playing song")
-                .addField("Title", this.songQueue[0].title)
-                .addField("link", this.songQueue[0].url);
+                .addField("Title", song.title)
+                .addField("link", song.url);
             this.textChannel.send(embed);
         });
     }

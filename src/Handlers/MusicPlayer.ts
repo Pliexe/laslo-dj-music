@@ -54,7 +54,7 @@ export class MusicPlayer
 
             collector.on('collect', m =>
             {
-                if (/cancel/i.test(m.content)) return collector.stop("cancelled");
+                if (m.content.toLowerCase() === "cancel") return collector.stop("cancelled");
                 let index = Number(m.content - 1);
                 callback(null, {
                     id: results.results[index].id,
@@ -65,8 +65,12 @@ export class MusicPlayer
 
             collector.on("end", (_, reason) =>
             {
-                if (["time", "cancelled"].includes(reason)) return message.channel.send("Cancelled selection.");
-                callback("1", null);
+                console.log(reason);
+                if (["time", "cancelled"].includes(reason)) {
+                    message.channel.send("Cancelled selection.");
+                    callback("1", null);
+                };
+
             });
         } else {
             callback(null, {
@@ -79,24 +83,21 @@ export class MusicPlayer
 
     addSong(song: ISong)
     {
-        if (this.songQueue.length <= 0) {
-            this.songQueue.push(song);
-            this.play();
-        } else {
-            this.songQueue.push(song);
-        }
+        console.log("Adding song: ");
+        if (this.songQueue.length <= 0) this.play(song);
+        this.songQueue.push(song);
     }
 
-    private async play()
+    private async play(song: ISong)
     {
-        console.log(this.songQueue);
-        const dispatcher = this.connection.play(await ytdl(this.songQueue[0].url))
+        console.log(song);
+        const dispatcher = this.connection.play(await ytdl(song.url))
             .on('end', reason =>
             {
                 if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
                 else console.log(reason);
                 this.songQueue.shift();
-                this.play();
+                this.play(this.songQueue[0]);
             })
             .on('error', error => console.error(error));
 
@@ -104,8 +105,8 @@ export class MusicPlayer
 
         let embed = new MessageEmbed()
             .setDescription("Playing song")
-            .addField("Title", this.songQueue[0].title)
-            .addField("link", this.songQueue[0].url);
+            .addField("Title", song.title)
+            .addField("link", song.url);
 
         this.textChannel.send(embed);
     }
