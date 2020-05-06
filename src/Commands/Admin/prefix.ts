@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { MessageErrorSender } from '../../Utils/MessageError';
-import { Command } from '../../Handlers/command';
+import { Command } from '../../Handlers/Command';
 import { PrefixManager } from '../../Handlers/PrefixManager';
 
 export = class extends Command
