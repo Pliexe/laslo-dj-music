@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const command_1 = require("../../Handlers/command");
-module.exports = class extends command_1.Command {
+const Command_1 = require("../../Handlers/Command");
+module.exports = class extends Command_1.Command {
     constructor(commandHandler) {
         super('prefix', {
             aliases: ['setprefix'],
