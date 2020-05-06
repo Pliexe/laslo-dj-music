@@ -4,16 +4,20 @@
   "description": "Discord music bot",
   "main": "bot.js",
   "scripts": {
-    "start": "node ./dist/bot.js",
-    "devnobuild": "node-env-run ./dist/bot.js",
+    "start": "tsc && node ./dist/bot.js",
     "dev": "tsc && node-env-run ./dist/bot.js"
   },
   "author": "Pliexe",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "erela.js": "^1.1.7",
-    "mongoose": "^5.9.12"
+    "express": "^4.16.4",
+    "ffmpeg": "^0.0.4",
+    "find-youtube-urls": "^0.0.2",
+    "mongoose": "^5.9.12",
+    "youtube-search": "^1.1.4",
+    "node-opus": "^0.3.2",
+    "ytdl-core-discord": "^1.2.0"
   },
   "devDependencies": {
     "@types/mongoose": "^5.7.15",

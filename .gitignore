@@ -1,6 +1,9 @@
 # secret information
 config.json
 
+#ffmpeg
+ffmpeg.exe
+
 #lavalink
 Lavalink.jar
 

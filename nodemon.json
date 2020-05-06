@@ -1,4 +1,0 @@
-{
-  "watch": ["src/**/*.ts"],
-  "exec": "tsc && node-env-run ./dist/bot.js"
-}
